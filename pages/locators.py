@@ -3,6 +3,10 @@ from selenium.webdriver.common.by import By
 class MainPageLocators():
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
 
+class BasePageLocators():
+    LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
+
 class LoginPageLocators():
     AUTHORIZE_LOGIN_LINK = (By.CSS_SELECTOR, "#id_login-username")
     AUTHORIZE_PASSWORD_LINK = (By.CSS_SELECTOR, "#iid_login-password")
