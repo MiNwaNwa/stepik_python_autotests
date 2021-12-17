@@ -6,7 +6,42 @@ from .pages.main_page import MainPage
 from .pages.product_page import ProductPage
 from .pages.basket_page import BasketPage
 from .pages.login_page import LoginPage
-# import
+
+from .supportSteps.generators import generateRandomStringNumbersLetters
+
+import pytest
+
+@pytest.mark.user_can_see
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/ru/accounts/login/"
+        login_page = LoginPage(browser, link)
+        login_page.open()
+        login_page.register_new_user(generateRandomStringNumbersLetters(9) + "@mail.ru", generateRandomStringNumbersLetters(9))
+        # time.sleep(5)
+        login_page.click_on_registration_button()
+        # time.sleep(10)
+
+    def test_user_cant_see_success_message(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+        # link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+        product_page = ProductPage(browser, link)
+        product_page.open()
+        product_page.should_not_success_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+        # link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+        product_page = ProductPage(browser, link)
+        product_page.open()
+        product_title = product_page.get_product_title()
+        product_price = product_page.get_product_price()
+        print("title = ", product_title)
+        print("price = ", product_price)
+        product_page.add_to_basket()
+
+
 
 # @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
 #                                   # "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1",
@@ -46,6 +81,13 @@ def test_guest_can_add_product_to_basket(browser):
     # basket_page.should_be_message_with_price()
     # time.sleep(15)
 
+def test_guest_cant_see_success_message(browser):
+    link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
+    # link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+    product_page = ProductPage(browser, link)
+    product_page.open()
+    product_page.should_not_success_message()
+
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
     # link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
@@ -61,12 +103,7 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     basket_page = BasketPage(browser, browser.current_url)
     basket_page.should_not_success_message()
 
-def test_guest_cant_see_success_message(browser):
-    link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
-    # link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
-    product_page = ProductPage(browser, link)
-    product_page.open()
-    product_page.should_not_success_message()
+
 
 def test_message_disappeared_after_adding_product_to_basket(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
