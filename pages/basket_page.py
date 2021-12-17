@@ -1,23 +1,11 @@
 from .base_page import BasePage
 from .locators import BasketPageLocators
 
-from selenium.common.exceptions import TimeoutException
-
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-
 class BasketPage(BasePage):
 # Общая проверка страницы корзины на наличие сообщения о продукте и цене
     def should_be_basket_page(self):
         self.should_be_message_with_product()
         self.should_be_message_with_price()
-
-    # def is_not_element_present(self, how, what, timeout=4):
-    #     try:
-    #         WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
-    #     except TimeoutException:
-    #         return True
-    #     return False
 
 # Получаем сообщение о добавлении продукта
     def get_product_message(self):
