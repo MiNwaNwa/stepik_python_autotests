@@ -74,6 +74,8 @@ def test_guest_cant_see_success_message(browser):
     product_page.should_not_success_message()
 
 # Тест: Гость не видит сообщение об успешно добавленных товарах на странице продукта
+# Помечаем тест, как временно падающий
+@pytest.mark.xfail
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear"
     product_page = ProductPage(browser, link)
